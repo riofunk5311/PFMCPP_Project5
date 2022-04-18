@@ -110,12 +110,14 @@ struct CustomBuildPc
         float powerConsume(float timeCpuRunningInMinutes, int cpuUsage, bool multiThreadingOn = true);
         float getTimeToCompile(float sizeOfFile, std::string compileError);
         float clockUp(float maxClockGain);
+        void returnSizeOfFile();
     };
 
     void writeProgram(std::string language);
     void createVideo(Cpu& cpuB, std::string nameOfCpu);
     void editPhoto();
-    void photoPrint(int photoYouWantToPrint);
+    int photoPrint(int photoYouWantToPrint);
+    void printSome();
 };
 
 CustomBuildPc::CustomBuildPc() : 
@@ -206,7 +208,7 @@ float CustomBuildPc::Cpu::clockUp(float maxClockGain)
     return 0;
 }        
 
-void CustomBuildPc::photoPrint(int photoYouWantToPrint)
+int CustomBuildPc::photoPrint(int photoYouWantToPrint)
 {
     int i = 1;
     if ( photoYouWantToPrint <= photo)
@@ -220,7 +222,18 @@ void CustomBuildPc::photoPrint(int photoYouWantToPrint)
         }
         std::cout << "Totally " << photoYouWantToPrint << " are printed" << std::endl;
     }
-    return;
+    return photoYouWantToPrint;
+}
+
+// 2a
+void CustomBuildPc::printSome()
+{
+    std::cout << this->photoPrint(5) << std::endl;
+}
+
+void CustomBuildPc::Cpu::returnSizeOfFile()
+{
+    std::cout << "Size of file: " << this->getTimeToCompile(60.0f, "Compile Error") << std::endl;
 }
 
 /*
@@ -374,6 +387,8 @@ struct Keyboard
     float distanceKeyTravel;
     std::string keyLanguage;
     float bluetoothChannel;
+
+    void outPutChar();
    
     int typeCharacters();
     void connectToUsb(int numPortsConnected);
@@ -440,6 +455,11 @@ int Keyboard::deleteCharacter(int pressDeleteKey)
     return characterTyped;
 }
 
+void Keyboard::outPutChar()
+{
+    std::cout << "Showing some characters "<< this->typeCharacters() << std::endl;
+}
+
 /*
  new UDT 4:
  with 2 member functions
@@ -452,6 +472,8 @@ struct OperatingSystem
 
     OperatingSystem();
     ~OperatingSystem();
+
+    void showSomePhoto();
 
     void monitorActivity(int amountOfRamInUse);
     int photoFinder();
@@ -487,6 +509,11 @@ int OperatingSystem::photoFinder()
     return photo;
 }
 
+void OperatingSystem::showSomePhoto()
+{
+    std::cout << "Finding Photo: " << this->photoFinder() << std::endl;
+}
+
 /*
  new UDT 5:
  with 2 member functions
@@ -500,8 +527,12 @@ struct SoftwareDevelopment
     CustomBuildPc customBuildPc;
     CustomBuildPc::Cpu cpu;
 
+    void displaySystemInfo();
+
     void setUpIDE(std::string nameOfOS, int amountOfHddInGb);
     void installFrameWork(std::string nameOfFrameWork);
+    int reportSystemInfo();
+
 };
 
 SoftwareDevelopment::SoftwareDevelopment()
@@ -530,6 +561,17 @@ void SoftwareDevelopment::installFrameWork(std::string nameOfFrameWork)
     std::cout << nameOfFrameWork << " will require " << minHDD << " gb space and " << minRam << " gb of RAM" << std::endl;
 }
 
+void SoftwareDevelopment::displaySystemInfo()
+{
+    std::cout << "System Info: " << this->reportSystemInfo() << std::endl;
+}
+
+int SoftwareDevelopment::reportSystemInfo()
+{
+    std::cout << "Amount of RAM: " << customBuildPc.amountOfRamInGb << std::endl;
+    return customBuildPc.amountOfRamInGb;
+}
+
 /*
  MAKE SURE YOU ARE NOT ON THE MASTER BRANCH
 
@@ -553,13 +595,17 @@ int main()
     customBuildPc.editPhoto();
     customBuildPc.writeProgram("C++");
     customBuildPc.createVideo(cpu, "AMD");
-    customBuildPc.photoPrint(35);
 
     std::cout << "You edited "<< customBuildPc.photo << " photos" << std::endl;
+
+    std::cout << "customBuildPc photoPrint " << customBuildPc.photoPrint(35) << std::endl;
+    customBuildPc.printSome();
     
     cpu.runProgram();
     cpu.powerConsume(10, 40, true);
-    cpu.getTimeToCompile(150.0f, "Compile Error");
+
+    std::cout << cpu.getTimeToCompile(150.0f, "Compile Error") << std::endl;
+    cpu.returnSizeOfFile();
 
     auto newCpuClock = cpu.clockUp(1.0f);
     std::cout << newCpuClock << std::endl;
@@ -571,6 +617,9 @@ int main()
 
     std::cout << "How many characters are typed? " << keyboard.characterTyped << std::endl;
 
+    std::cout << "Keyboard.typeCharacters(): " << keyboard.typeCharacters() << std::endl;
+    keyboard.outPutChar();
+
     auto charLeft = keyboard.deleteCharacter(34);
     std::cout << "There are " << charLeft << " characters left" << std::endl;
 
@@ -580,10 +629,16 @@ int main()
     auto photo = operatingSystem.photoFinder();
     std::cout << photo << std::endl;
 
+    std::cout << "Showing Some Photo: " << operatingSystem.photoFinder() << std::endl;
+    operatingSystem.showSomePhoto();
+
     // UDT 5
-    SoftwareDevelopment softwaredevelopment;
-    softwaredevelopment.setUpIDE("macOS", 1000);
-    softwaredevelopment.installFrameWork("Juce");
+    SoftwareDevelopment softwareDevelopment;
+    softwareDevelopment.setUpIDE("macOS", 1000);
+    softwareDevelopment.installFrameWork("Juce");
+
+    std::cout << softwareDevelopment.reportSystemInfo() << std::endl;
+    softwareDevelopment.displaySystemInfo();
     
     std::cout << "good to go!" << std::endl;
 }
