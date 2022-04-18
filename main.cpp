@@ -448,7 +448,8 @@ struct OperatingSystem
     OperatingSystem();
     ~OperatingSystem();
 
-    // start from here
+    void monitorActivity(int amountOfRamInUse);
+    int photoFinder();
 };
 
 OperatingSystem::OperatingSystem()
@@ -461,10 +462,68 @@ OperatingSystem::~OperatingSystem()
     std::cout << "OperatingSystem is being destructed!" << std::endl;
 }
 
+void OperatingSystem::monitorActivity(int amountRamInUse)
+{
+    int ramAvailable = customBuildPc.amountOfRamInGb - amountRamInUse;
+    std::string program = cpu.program;
+    
+    std::cout << ramAvailable << " GB available" << std::endl;
+    std::cout << program << " is now running" << std::endl;
+}
+
+int OperatingSystem::photoFinder()
+{
+    auto photo = customBuildPc.photo;
+    
+    for ( int i = 1; i <= photo; ++i )
+    {
+        std::cout << i << " photos are found" << std::endl;
+    }
+    return photo;
+}
+
 /*
  new UDT 5:
  with 2 member functions
  */
+
+struct SoftwareDevelopment
+{
+    SoftwareDevelopment();
+    ~SoftwareDevelopment();
+
+    CustomBuildPc customBuildPc;
+    CustomBuildPc::Cpu cpu;
+
+    void setUpIDE(std::string nameOfOS, int amountOfHddInGb);
+    void installFrameWork(std::string nameOfFrameWork);
+};
+
+SoftwareDevelopment::SoftwareDevelopment()
+{
+    std::cout << "Software Development being constructed!" << std::endl;
+}
+
+SoftwareDevelopment::~SoftwareDevelopment()
+{
+    std::cout << "Software Development being destructed!" << std::endl;
+}
+
+void SoftwareDevelopment::setUpIDE(std::string nameOfOS, int amountOfHddInGb)
+{
+    if ( amountOfHddInGb > 50 )
+    {
+        std::cout << "Configuration: " << nameOfOS << " \nCPU: " << cpu.manufacturer << std::endl;
+        std::cout << "Installation will begin" << std::endl;
+    }
+}
+
+void SoftwareDevelopment::installFrameWork(std::string nameOfFrameWork)
+{
+    int minRam = customBuildPc.amountOfRamInGb - 16;
+    int minHDD = customBuildPc.amountOfHddInGb - 1880;
+    std::cout << nameOfFrameWork << " will require " << minHDD << " gb space and " << minRam << " gb of RAM" << std::endl;
+}
 
 /*
  MAKE SURE YOU ARE NOT ON THE MASTER BRANCH
@@ -483,5 +542,43 @@ OperatingSystem::~OperatingSystem()
 #include <iostream>
 int main()
 {
+    CustomBuildPc customBuildPc;
+    CustomBuildPc::Cpu cpu;
+
+    customBuildPc.editPhoto();
+    customBuildPc.writeProgram("C++");
+    customBuildPc.createVideo(cpu, "AMD");
+    customBuildPc.photoPrint(35);
+
+    std::cout << "You edited "<< customBuildPc.photo << " photos" << std::endl;
+    
+    cpu.runProgram();
+    cpu.powerConsume(10, 40, true);
+    cpu.getTimeToCompile(150.0f, "Compile Error");
+
+    auto newCpuClock = cpu.clockUp(1.0f);
+    std::cout << newCpuClock << std::endl;
+
+    Keyboard keyboard;
+    keyboard.typeCharacters();
+    keyboard.connectToUsb(3);
+    keyboard.sendKeyCommands(10, "US-EN");
+
+    std::cout << "How many characters are typed? " << keyboard.characterTyped << std::endl;
+
+    auto charLeft = keyboard.deleteCharacter(34);
+    std::cout << "There are " << charLeft << " characters left" << std::endl;
+
+    // UDT 4
+    OperatingSystem operatingSystem;
+    operatingSystem.monitorActivity(12);
+    auto photo = operatingSystem.photoFinder();
+    std::cout << photo << std::endl;
+
+    // UDT 5
+    SoftwareDevelopment softwaredevelopment;
+    softwaredevelopment.setUpIDE("macOS", 1000);
+    softwaredevelopment.installFrameWork("Juce");
+    
     std::cout << "good to go!" << std::endl;
 }
