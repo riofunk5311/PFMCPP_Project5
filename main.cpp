@@ -110,14 +110,17 @@ struct CustomBuildPc
         float powerConsume(float timeCpuRunningInMinutes, int cpuUsage, bool multiThreadingOn = true);
         float getTimeToCompile(float sizeOfFile, std::string compileError);
         float clockUp(float maxClockGain);
-        void returnSizeOfFile();
+
+        void displayCpuTemp();
+        float getCpuCondition(float cpuTemp);
     };
 
     void writeProgram(std::string language);
     void createVideo(Cpu& cpuB, std::string nameOfCpu);
     void editPhoto();
     int photoPrint(int photoYouWantToPrint);
-    void printSome();
+
+    void getSizeOfHDDInGB();
 };
 
 CustomBuildPc::CustomBuildPc() : 
@@ -226,14 +229,23 @@ int CustomBuildPc::photoPrint(int photoYouWantToPrint)
 }
 
 // 2a
-void CustomBuildPc::printSome()
+float CustomBuildPc::Cpu::getCpuCondition(float cpuTemp)
 {
-    std::cout << this->photoPrint(5) << std::endl;
+    if ( cpuTemp <= 80.0f )
+    {
+        std::cout << "Cpu is running normal" << std::endl;
+    }
+    return cpuTemp;
 }
 
-void CustomBuildPc::Cpu::returnSizeOfFile()
+void CustomBuildPc::Cpu::displayCpuTemp()
 {
-    std::cout << "Size of file: " << this->getTimeToCompile(60.0f, "Compile Error") << std::endl;
+    std::cout << "Get Cpu Temp: " << this->getCpuCondition(60.0f) << std::endl;
+}
+
+void CustomBuildPc::getSizeOfHDDInGB()
+{
+    std::cout << "Get size of HDD: " << this->amountOfHddInGb << std::endl;
 }
 
 /*
@@ -388,7 +400,7 @@ struct Keyboard
     std::string keyLanguage;
     float bluetoothChannel;
 
-    void outPutChar();
+    void getOutPutChar();
    
     int typeCharacters();
     void connectToUsb(int numPortsConnected);
@@ -455,9 +467,9 @@ int Keyboard::deleteCharacter(int pressDeleteKey)
     return characterTyped;
 }
 
-void Keyboard::outPutChar()
+void Keyboard::getOutPutChar()
 {
-    std::cout << "Showing some characters "<< this->typeCharacters() << std::endl;
+    std::cout << "How many characters are typed? " << this->characterTyped << std::endl;
 }
 
 /*
@@ -473,10 +485,11 @@ struct OperatingSystem
     OperatingSystem();
     ~OperatingSystem();
 
-    void showSomePhoto();
+    std::string nameOfOS { "MacOS" };
 
     void monitorActivity(int amountOfRamInUse);
     int photoFinder();
+    void displayNameOfOS();
 };
 
 OperatingSystem::OperatingSystem()
@@ -509,9 +522,9 @@ int OperatingSystem::photoFinder()
     return photo;
 }
 
-void OperatingSystem::showSomePhoto()
+void OperatingSystem::displayNameOfOS()
 {
-    std::cout << "Finding Photo: " << this->photoFinder() << std::endl;
+    std::cout << "Name of OS: " << this->nameOfOS << std::endl;
 }
 
 /*
@@ -531,7 +544,7 @@ struct SoftwareDevelopment
 
     void setUpIDE(std::string nameOfOS, int amountOfHddInGb);
     void installFrameWork(std::string nameOfFrameWork);
-    int reportSystemInfo();
+    int getRamAmountInGB();
 
 };
 
@@ -563,10 +576,10 @@ void SoftwareDevelopment::installFrameWork(std::string nameOfFrameWork)
 
 void SoftwareDevelopment::displaySystemInfo()
 {
-    std::cout << "System Info: " << this->reportSystemInfo() << std::endl;
+    std::cout << "System Info: " << this->getRamAmountInGB() << std::endl;
 }
 
-int SoftwareDevelopment::reportSystemInfo()
+int SoftwareDevelopment::getRamAmountInGB()
 {
     std::cout << "Amount of RAM: " << customBuildPc.amountOfRamInGb << std::endl;
     return customBuildPc.amountOfRamInGb;
@@ -595,20 +608,21 @@ int main()
     customBuildPc.editPhoto();
     customBuildPc.writeProgram("C++");
     customBuildPc.createVideo(cpu, "AMD");
+    customBuildPc.photoPrint(35);
 
     std::cout << "You edited "<< customBuildPc.photo << " photos" << std::endl;
-
-    std::cout << "customBuildPc photoPrint " << customBuildPc.photoPrint(35) << std::endl;
-    customBuildPc.printSome();
     
     cpu.runProgram();
     cpu.powerConsume(10, 40, true);
 
-    std::cout << cpu.getTimeToCompile(150.0f, "Compile Error") << std::endl;
-    cpu.returnSizeOfFile();
-
     auto newCpuClock = cpu.clockUp(1.0f);
     std::cout << newCpuClock << std::endl;
+
+    std::cout << "Size of HDD: " << customBuildPc.amountOfHddInGb << std::endl;
+    customBuildPc.getSizeOfHDDInGB();
+
+    std::cout << "Get Cpu Temp: " << cpu.getCpuCondition(60.0f)<< std::endl;
+    cpu.displayCpuTemp();
 
     Keyboard keyboard;
     keyboard.typeCharacters();
@@ -616,9 +630,7 @@ int main()
     keyboard.sendKeyCommands(10, "US-EN");
 
     std::cout << "How many characters are typed? " << keyboard.characterTyped << std::endl;
-
-    std::cout << "Keyboard.typeCharacters(): " << keyboard.typeCharacters() << std::endl;
-    keyboard.outPutChar();
+    keyboard.getOutPutChar();
 
     auto charLeft = keyboard.deleteCharacter(34);
     std::cout << "There are " << charLeft << " characters left" << std::endl;
@@ -629,15 +641,15 @@ int main()
     auto photo = operatingSystem.photoFinder();
     std::cout << photo << std::endl;
 
-    std::cout << "Showing Some Photo: " << operatingSystem.photoFinder() << std::endl;
-    operatingSystem.showSomePhoto();
+    std::cout << "Name of OS: " << operatingSystem.nameOfOS << std::endl;
+    operatingSystem.displayNameOfOS();
 
     // UDT 5
     SoftwareDevelopment softwareDevelopment;
     softwareDevelopment.setUpIDE("macOS", 1000);
     softwareDevelopment.installFrameWork("Juce");
 
-    std::cout << softwareDevelopment.reportSystemInfo() << std::endl;
+    std::cout << softwareDevelopment.getRamAmountInGB() << std::endl;
     softwareDevelopment.displaySystemInfo();
     
     std::cout << "good to go!" << std::endl;
