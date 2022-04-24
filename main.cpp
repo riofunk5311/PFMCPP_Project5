@@ -1,6 +1,6 @@
 /*
  Project 5: Part 3 / 4
- video: Chapter 3 Part 4: 
+ video: Chapter 3 Part 4:
 
 Create a branch named Part3
 
@@ -14,15 +14,15 @@ Create a branch named Part3
  
  4) write wrapper classes for each type similar to how it was shown in the video
  
- 5) update main() 
+ 5) update main()
       replace your objects with your wrapper classes, which have your UDTs as pointer member variables.
       
-    This means if you had something like the following in your main() previously: 
+    This means if you had something like the following in your main() previously:
 */
 #if false
- Axe axe;
- std::cout << "axe sharpness: " << axe.sharpness << "\n";
- #endif
+Axe axe;
+std::cout << "axe sharpness: " << axe.sharpness << "\n";
+#endif
  /*
     you would update that to use your wrappers:
     
@@ -36,7 +36,7 @@ std::cout << "axe sharpness: " << axWrapper.axPtr->sharpness << "\n";
 notice that the object name has changed from 'axe' to 'axWrapper'
 You don't have to do this, you can keep your current object name and just change its type to your Wrapper class
 
-6) If you have a class that has a nested class in it, and an instantiation of that nested class as a member variable, 
+6) If you have a class that has a nested class in it, and an instantiation of that nested class as a member variable,
     - you do not need to write a Wrapper for that nested class
     - you do not need to replace that nested instance with a wrapped instance.
     If you want an explanation, message me in Slack
@@ -79,7 +79,8 @@ void Axe::aConstMemberFunction() const { }
 
 
 
-#include<iostream>
+#include <iostream>
+#include "LeakedObjectDetector.h"
 
 /*
  copied UDT 1:
@@ -125,10 +126,12 @@ struct CustomBuildPc
     int photoPrint(int photoYouWantToPrint);
 
     void getSizeOfHDDInGB();
+
+    JUCE_LEAK_DETECTOR(CustomBuildPc)
 };
 
-CustomBuildPc::CustomBuildPc() : 
-amountOfHddInGb(2000), 
+CustomBuildPc::CustomBuildPc() :
+amountOfHddInGb(2000),
 amountOfWattage(600)
 {
     std::cout << "CustomBuildPc being constructed!" << std::endl;
@@ -139,7 +142,7 @@ CustomBuildPc::~CustomBuildPc()
     std::cout << "CustomBuildPc being destructed!" << std::endl;
 }
 
-CustomBuildPc::Cpu::Cpu() : 
+CustomBuildPc::Cpu::Cpu() :
 numPhysicalCpus(4),
 clockSpeedInGhz(2.8f)
 {
@@ -207,13 +210,13 @@ float CustomBuildPc::Cpu::clockUp(float maxClockGain)
             std::cout << "Running at " << newBaseClock << " Ghz " << std::endl;
         }
     }
-    else 
+    else
     {
         std::cout << "Cpu is not running properly" << std::endl;
     }
 
     return 0;
-}        
+}
 
 int CustomBuildPc::photoPrint(int photoYouWantToPrint)
 {
@@ -252,6 +255,17 @@ void CustomBuildPc::getSizeOfHDDInGB()
     std::cout << "Get size of HDD: " << this->amountOfHddInGb << std::endl;
 }
 
+struct CustomBuildPcWrapper
+{
+    CustomBuildPcWrapper( CustomBuildPc* ptr ) : customBuildPcPtr( ptr ) { }
+    ~CustomBuildPcWrapper()
+    {
+        delete customBuildPcPtr;
+    }
+    
+    CustomBuildPc* customBuildPcPtr = nullptr;
+};
+
 /*
  copied UDT 2:
  */
@@ -271,7 +285,7 @@ struct PhotoShoot
 
     struct Camera
     {
-        double shutterSpeed { 0.000125 }; 
+        double shutterSpeed { 0.000125 };
         bool isMirrorLess = true;
         std::string brand = "Nikon";
         std::string model;
@@ -290,9 +304,11 @@ struct PhotoShoot
     void makeNewFashionStyle(Camera& cameraA);
     int bookStudio(int daysToShoot, int numOfCrews);
     int callHairMakeArtist(int personToBeShot);
+
+    JUCE_LEAK_DETECTOR(PhotoShoot)
 };
 
-PhotoShoot::PhotoShoot() : 
+PhotoShoot::PhotoShoot() :
 amountOfMemoryCard(512),
 amountOfClothes(25.0f)
 {
@@ -301,10 +317,10 @@ amountOfClothes(25.0f)
 
 PhotoShoot::~PhotoShoot()
 {
-    std::cout << "PhotoShoot being destructed!" << std::endl;    
+    std::cout << "PhotoShoot being destructed!" << std::endl;
 }
 
-PhotoShoot::Camera::Camera() : 
+PhotoShoot::Camera::Camera() :
 model("Z9"),
 typeOfLens("Standard")
 {
@@ -313,7 +329,7 @@ typeOfLens("Standard")
 
 PhotoShoot::Camera::~Camera()
 {
-    std::cout << "Camera being destructed!" << std::endl;    
+    std::cout << "Camera being destructed!" << std::endl;
 }
 
 void PhotoShoot::makePr()
@@ -388,6 +404,17 @@ int PhotoShoot::callHairMakeArtist(int personToBeShot)
     return numHairMakeUpArtists;
 }
 
+struct PhotoShootWrapper
+{
+    PhotoShootWrapper( PhotoShoot* ptr ) : photoShootPtr( ptr ) { }
+    ~PhotoShootWrapper()
+    {
+        delete photoShootPtr;
+    }
+    
+    PhotoShoot* photoShootPtr = nullptr;
+};
+
 /*
  copied UDT 3:
  */
@@ -410,9 +437,11 @@ struct Keyboard
     void connectToUsb(int numPortsConnected);
     void sendKeyCommands(int keyInput, std::string keyLayout);
     int deleteCharacter(int pressDeleteKey);
+
+    JUCE_LEAK_DETECTOR(Keyboard)
 };
 
-Keyboard::Keyboard() : 
+Keyboard::Keyboard() :
 numUsbPorts(2),
 characterTyped(40),
 numKeysTyped(20),
@@ -476,6 +505,17 @@ void Keyboard::getOutPutChar()
     std::cout << "How many characters are typed? " << this->characterTyped << std::endl;
 }
 
+struct KeyboardWrapper
+{
+    KeyboardWrapper( Keyboard* ptr ) : keyboardPtr( ptr ) { }
+    ~KeyboardWrapper()
+    {
+        delete keyboardPtr;
+    }
+    
+    Keyboard* keyboardPtr = nullptr;
+};
+
 /*
  new UDT 4:
  with 2 member functions
@@ -494,6 +534,8 @@ struct OperatingSystem
     void monitorActivity(int amountOfRamInUse);
     int photoFinder();
     void displayNameOfOS();
+
+    JUCE_LEAK_DETECTOR(OperatingSystem)
 };
 
 OperatingSystem::OperatingSystem()
@@ -531,6 +573,16 @@ void OperatingSystem::displayNameOfOS()
     std::cout << "Name of OS: " << this->nameOfOS << std::endl;
 }
 
+struct OperatingSystemWrapper
+{
+    OperatingSystemWrapper( OperatingSystem* ptr ) : operatingSystemPtr ( ptr ) { }
+    ~OperatingSystemWrapper()
+    {
+        delete operatingSystemPtr;
+    }
+    OperatingSystem* operatingSystemPtr = nullptr;
+};
+
 /*
  new UDT 5:
  with 2 member functions
@@ -550,6 +602,7 @@ struct SoftwareDevelopment
     void installFrameWork(std::string nameOfFrameWork);
     int getRamAmountInGB();
 
+    JUCE_LEAK_DETECTOR(SoftwareDevelopment)
 };
 
 SoftwareDevelopment::SoftwareDevelopment()
@@ -589,12 +642,23 @@ int SoftwareDevelopment::getRamAmountInGB()
     return customBuildPc.amountOfRamInGb;
 }
 
+struct SoftwareDevelopmentWrapper
+{
+    SoftwareDevelopmentWrapper( SoftwareDevelopment* ptr ) : softwareDevelopmentPtr( ptr ) { }
+    ~SoftwareDevelopmentWrapper()
+    {
+        delete softwareDevelopmentPtr;
+    }
+    
+    SoftwareDevelopment* softwareDevelopmentPtr = nullptr;
+};
+
 /*
  MAKE SURE YOU ARE NOT ON THE MASTER BRANCH
 
  Commit your changes by clicking on the Source Control panel on the left, entering a message, and click [Commit and push].
  
- If you didn't already: 
+ If you didn't already:
     Make a pull request after you make your first commit
     pin the pull request link and this repl.it link to our DM thread in a single message.
 
@@ -606,15 +670,15 @@ int SoftwareDevelopment::getRamAmountInGB()
 #include <iostream>
 int main()
 {
-    CustomBuildPc customBuildPc;
+    CustomBuildPcWrapper customBuildPc( new CustomBuildPc() );
     CustomBuildPc::Cpu cpu;
 
-    customBuildPc.editPhoto();
-    customBuildPc.writeProgram("C++");
-    customBuildPc.createVideo(cpu, "AMD");
-    customBuildPc.photoPrint(35);
+    customBuildPc.customBuildPcPtr->editPhoto();
+    customBuildPc.customBuildPcPtr->writeProgram("C++");
+    customBuildPc.customBuildPcPtr->createVideo(cpu, "AMD");
+    customBuildPc.customBuildPcPtr->photoPrint(35);
 
-    std::cout << "You edited "<< customBuildPc.photo << " photos" << std::endl;
+    std::cout << "You edited "<< customBuildPc.customBuildPcPtr->photo << " photos" << std::endl;
     
     cpu.runProgram();
     cpu.powerConsume(10, 40, true);
@@ -622,39 +686,42 @@ int main()
     auto newCpuClock = cpu.clockUp(1.0f);
     std::cout << newCpuClock << std::endl;
 
-    std::cout << "Size of HDD: " << customBuildPc.amountOfHddInGb << std::endl;
-    customBuildPc.getSizeOfHDDInGB();
+    std::cout << "Size of HDD: " << customBuildPc.customBuildPcPtr->amountOfHddInGb << std::endl;
+    customBuildPc.customBuildPcPtr->getSizeOfHDDInGB();
 
     std::cout << "Get Cpu Temp: " << cpu.getCpuCondition(60.0f)<< std::endl;
     cpu.displayCpuTemp();
 
-    Keyboard keyboard;
-    keyboard.typeCharacters();
-    keyboard.connectToUsb(3);
-    keyboard.sendKeyCommands(10, "US-EN");
+    KeyboardWrapper keyboard( new Keyboard() );
+    
+    keyboard.keyboardPtr->typeCharacters();
+    keyboard.keyboardPtr->connectToUsb(3);
+    keyboard.keyboardPtr->sendKeyCommands(10, "US-EN");
 
-    std::cout << "How many characters are typed? " << keyboard.characterTyped << std::endl;
-    keyboard.getOutPutChar();
+    std::cout << "How many characters are typed? " << keyboard.keyboardPtr->characterTyped << std::endl;
+    keyboard.keyboardPtr->getOutPutChar();
 
-    auto charLeft = keyboard.deleteCharacter(34);
+    auto charLeft = keyboard.keyboardPtr->deleteCharacter(34);
     std::cout << "There are " << charLeft << " characters left" << std::endl;
 
     // UDT 4
-    OperatingSystem operatingSystem;
-    operatingSystem.monitorActivity(12);
-    auto photo = operatingSystem.photoFinder();
+    OperatingSystemWrapper operatingSystem( new OperatingSystem() );
+    
+    operatingSystem.operatingSystemPtr->monitorActivity(12);
+    auto photo = operatingSystem.operatingSystemPtr->photoFinder();
     std::cout << photo << std::endl;
 
-    std::cout << "Name of OS: " << operatingSystem.nameOfOS << std::endl;
-    operatingSystem.displayNameOfOS();
+    std::cout << "Name of OS: " << operatingSystem.operatingSystemPtr->nameOfOS << std::endl;
+    operatingSystem.operatingSystemPtr->displayNameOfOS();
 
     // UDT 5
-    SoftwareDevelopment softwareDevelopment;
-    softwareDevelopment.setUpIDE("macOS", 1000);
-    softwareDevelopment.installFrameWork("Juce");
+    SoftwareDevelopmentWrapper softwareDevelopment( new SoftwareDevelopment() );
+    
+    softwareDevelopment.softwareDevelopmentPtr->setUpIDE("macOS", 1000);
+    softwareDevelopment.softwareDevelopmentPtr->installFrameWork("Juce");
 
-    std::cout << softwareDevelopment.getRamAmountInGB() << std::endl;
-    softwareDevelopment.displaySystemInfo();
+    std::cout << softwareDevelopment.softwareDevelopmentPtr->getRamAmountInGB() << std::endl;
+    softwareDevelopment.softwareDevelopmentPtr->displaySystemInfo();
     
     std::cout << "good to go!" << std::endl;
 }
