@@ -30,19 +30,19 @@ void PhotoShoot::makePr()
     std::cout << "PhotoShoot::makePr() " << nameOfCompanies << std::endl;
 }
 
-void PhotoShoot::makeNewFashionStyle(Camera &cameraA)
+void PhotoShoot::makeNewFashionStyle(const Camera &cameraA)
 {
     std::cout << "We need " << amountOfMemoryCard << " of Memory Card and " << amountOfClothes << " of clothes" << std::endl;
     std::cout << cameraA.brand << std::endl;
 }
 
-int PhotoShoot::bookStudio(int daysToShoot, int numOfCrews)
+int PhotoShoot::bookStudio(const int daysToShoot, const int numOfCrews)
 {
     std::cout << "We need " << daysToShoot << " studio days and " << numOfCrews << " Crews" << std::endl;
     return 0;
 }
 
-void PhotoShoot::Camera::shootVideo()
+void PhotoShoot::Camera::shootVideo() const
 {
     if ( isMirrorLess == false)
     {
@@ -52,12 +52,12 @@ void PhotoShoot::Camera::shootVideo()
     std::cout << "We use " << model << std::endl;
 }
 
-void PhotoShoot::Camera::changeLens()
+void PhotoShoot::Camera::changeLens() const
 {
     std::cout << "PhotoShoot::Camera::changeLens() "<< typeOfLens << std::endl;
 }
 
-int PhotoShoot::Camera::takePhoto()
+int PhotoShoot::Camera::takePhoto() const
 {
     if ( isMirrorLess )
     {
@@ -67,7 +67,7 @@ int PhotoShoot::Camera::takePhoto()
     return photoTaken;
 }
 
-void PhotoShoot::Camera::countModel(int personTaken)
+void PhotoShoot::Camera::countModel(const int personTaken)
 {
     PhotoShoot photoShoot;
     
@@ -80,7 +80,7 @@ void PhotoShoot::Camera::countModel(int personTaken)
     return;
 }
 
-int PhotoShoot::callHairMakeArtist(int personToBeShot)
+int PhotoShoot::callHairMakeArtist(const int personToBeShot)
 {
     int i = 1;
     numHairMakeUpArtists = 1;

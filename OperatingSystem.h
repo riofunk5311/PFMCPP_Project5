@@ -12,9 +12,9 @@ struct OperatingSystem
 
     std::string nameOfOS { "MacOS" };
 
-    void monitorActivity(int amountOfRamInUse);
+    void monitorActivity(const int amountOfRamInUse);
     int photoFinder();
-    void displayNameOfOS();
+    void displayNameOfOS() const;
 
     JUCE_LEAK_DETECTOR(OperatingSystem)
 };

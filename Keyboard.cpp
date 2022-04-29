@@ -17,13 +17,13 @@ Keyboard::~Keyboard()
     std::cout << "Keyboard being destructed!" << std::endl;
 }
 
-int Keyboard::typeCharacters()
+int Keyboard::typeCharacters() const
 {
     std::cout << "Keyboard::typeCharacters() " << characterTyped << std::endl;
     return characterTyped;
 }
 
-void Keyboard::connectToUsb(int numPortsConnected)
+void Keyboard::connectToUsb(const int numPortsConnected) const
 {
     if ( numPortsConnected == 2 )
     {
@@ -33,7 +33,7 @@ void Keyboard::connectToUsb(int numPortsConnected)
     std::cout << numUsbPorts << " usb ports are being used" << std::endl;
 }
 
-void Keyboard::sendKeyCommands(int keyInput, std::string keyLayout)
+void Keyboard::sendKeyCommands(const int keyInput, const std::string keyLayout) const
 {
     if ( keyInput == 109 )
     {
@@ -41,7 +41,7 @@ void Keyboard::sendKeyCommands(int keyInput, std::string keyLayout)
     }
 }
 
-int Keyboard::deleteCharacter(int pressDeleteKey)
+int Keyboard::deleteCharacter(const int pressDeleteKey)
 {
     if ( pressDeleteKey >= characterTyped )
     {
@@ -60,7 +60,7 @@ int Keyboard::deleteCharacter(int pressDeleteKey)
     return characterTyped;
 }
 
-void Keyboard::getOutPutChar()
+void Keyboard::getOutPutChar() const
 {
     std::cout << "How many characters are typed? " << this->characterTyped << std::endl;
 }

@@ -13,12 +13,12 @@ struct Keyboard
     std::string keyLanguage;
     float bluetoothChannel;
 
-    void getOutPutChar();
+    void getOutPutChar() const;
    
-    int typeCharacters();
-    void connectToUsb(int numPortsConnected);
-    void sendKeyCommands(int keyInput, std::string keyLayout);
-    int deleteCharacter(int pressDeleteKey);
+    int typeCharacters() const;
+    void connectToUsb(const int numPortsConnected) const;
+    void sendKeyCommands(const int keyInput, const std::string keyLayout) const;
+    int deleteCharacter(const int pressDeleteKey);
 
     JUCE_LEAK_DETECTOR(Keyboard)
 };

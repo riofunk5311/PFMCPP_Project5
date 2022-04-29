@@ -10,11 +10,11 @@ struct SoftwareDevelopment
     CustomBuildPc customBuildPc;
     CustomBuildPc::Cpu cpu;
 
-    void displaySystemInfo();
+    void displaySystemInfo() const;
 
-    void setUpIDE(std::string nameOfOS, int amountOfHddInGb);
-    void installFrameWork(std::string nameOfFrameWork);
-    int getRamAmountInGB();
+    void setUpIDE(const std::string nameOfOS, const int amountOfHddInGb) const;
+    void installFrameWork(const std::string nameOfFrameWork) const;
+    int getRamAmountInGB() const;
 
     JUCE_LEAK_DETECTOR(SoftwareDevelopment)
 };

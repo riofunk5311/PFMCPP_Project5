@@ -26,21 +26,21 @@ struct CustomBuildPc
         int numPhysicalCpus;
         float clockSpeedInGhz;
 
-        void runProgram();
-        float powerConsume(float timeCpuRunningInMinutes, int cpuUsage, bool multiThreadingOn = true);
-        float getTimeToCompile(float sizeOfFile, std::string compileError);
+        void runProgram() const;
+        float powerConsume(const float timeCpuRunningInMinutes, const int cpuUsage, const bool multiThreadingOn = true) const;
+        float getTimeToCompile(const float sizeOfFile, const std::string compileError) const;
         float clockUp(float maxClockGain);
 
-        void displayCpuTemp();
-        float getCpuCondition(float cpuTemp);
+        void displayCpuTemp() const;
+        float getCpuCondition(const float cpuTemp) const;
     };
 
-    void writeProgram(std::string language);
-    void createVideo(Cpu& cpuB, std::string nameOfCpu);
-    void editPhoto();
-    int photoPrint(int photoYouWantToPrint);
+    void writeProgram(const std::string language) const;
+    void createVideo(const Cpu& cpuB, std::string nameOfCpu) const;
+    void editPhoto() const;
+    int photoPrint(const int photoYouWantToPrint);
 
-    void getSizeOfHDDInGB();
+    void getSizeOfHDDInGB() const;
 
     JUCE_LEAK_DETECTOR(CustomBuildPc)
 };

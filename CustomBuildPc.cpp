@@ -26,13 +26,13 @@ CustomBuildPc::Cpu::~Cpu()
     std::cout << "Cpu being destructed!" << std::endl;
 }
 
-void CustomBuildPc::Cpu::runProgram()
+void CustomBuildPc::Cpu::runProgram() const
 {
     std::cout << "Cpu is running at " << clockSpeedInGhz << " Hz" << " on " << numPhysicalCpus << " CPUs" <<  std::endl;
     std::cout << "CustonBuildPc::Cpu::runProgram() " << program << std::endl;
 }
 
-float CustomBuildPc::Cpu::powerConsume(float timeCpuRunningInMinutes, int cpuUsage, bool multiThreadingOn)
+float CustomBuildPc::Cpu::powerConsume(const float timeCpuRunningInMinutes, const int cpuUsage, const bool multiThreadingOn) const
 {
     if ( multiThreadingOn == true && cpuUsage == 5 )
     {
@@ -42,7 +42,7 @@ float CustomBuildPc::Cpu::powerConsume(float timeCpuRunningInMinutes, int cpuUsa
     return clockSpeedInGhz * timeCpuRunningInMinutes;
 }
 
-float CustomBuildPc::Cpu::getTimeToCompile(float sizeOfFile, std::string compileError)
+float CustomBuildPc::Cpu::getTimeToCompile(const float sizeOfFile, const std::string compileError) const
 {
     if ( sizeOfFile > 100.0f )
     {
@@ -52,17 +52,17 @@ float CustomBuildPc::Cpu::getTimeToCompile(float sizeOfFile, std::string compile
     return sizeOfFile;
 }
 
-void CustomBuildPc::writeProgram(std::string language)
+void CustomBuildPc::writeProgram(const std::string language) const
 {
     std::cout << language << std::endl;
 }
 
-void CustomBuildPc::createVideo(Cpu &cpuB, std::string nameOfCpu)
+void CustomBuildPc::createVideo(const Cpu &cpuB, std::string nameOfCpu) const
 {
      std::cout << cpuB.numCpuCore << "\n" << nameOfCpu << std::endl;
 }
 
-void CustomBuildPc::editPhoto()
+void CustomBuildPc::editPhoto() const
 {
     std::cout << "Amount of wattage: " << amountOfWattage << std::endl;
     std::cout << "CustomBuildPc::editPhoto() " << photo << std::endl;
@@ -90,7 +90,7 @@ float CustomBuildPc::Cpu::clockUp(float maxClockGain)
     return 0;
 }
 
-int CustomBuildPc::photoPrint(int photoYouWantToPrint)
+int CustomBuildPc::photoPrint(const int photoYouWantToPrint)
 {
     int i = 1;
     if ( photoYouWantToPrint <= photo)
@@ -108,7 +108,7 @@ int CustomBuildPc::photoPrint(int photoYouWantToPrint)
 }
 
 // 2a
-float CustomBuildPc::Cpu::getCpuCondition(float cpuTemp)
+float CustomBuildPc::Cpu::getCpuCondition(const float cpuTemp) const
 {
     if ( cpuTemp <= 80.0f )
     {
@@ -117,12 +117,12 @@ float CustomBuildPc::Cpu::getCpuCondition(float cpuTemp)
     return cpuTemp;
 }
 
-void CustomBuildPc::Cpu::displayCpuTemp()
+void CustomBuildPc::Cpu::displayCpuTemp() const 
 {
     std::cout << "Get Cpu Temp: " << this->getCpuCondition(60.0f) << std::endl;
 }
 
-void CustomBuildPc::getSizeOfHDDInGB()
+void CustomBuildPc::getSizeOfHDDInGB() const
 {
     std::cout << "Get size of HDD: " << this->amountOfHddInGb << std::endl;
 }

@@ -25,16 +25,16 @@ struct PhotoShoot
         Camera();
         ~Camera();
 
-        void shootVideo();
-        void changeLens();
-        int takePhoto();
-        void countModel(int personTaken);
+        void shootVideo() const;
+        void changeLens() const;
+        int takePhoto() const;
+        void countModel(const int personTaken);
     };
 
     void makePr();
-    void makeNewFashionStyle(Camera& cameraA);
-    int bookStudio(int daysToShoot, int numOfCrews);
-    int callHairMakeArtist(int personToBeShot);
+    void makeNewFashionStyle( const Camera& cameraA);
+    int bookStudio(const int daysToShoot, const int numOfCrews);
+    int callHairMakeArtist(const int personToBeShot);
 
     JUCE_LEAK_DETECTOR(PhotoShoot)
 };

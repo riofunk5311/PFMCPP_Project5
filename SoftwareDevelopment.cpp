@@ -12,7 +12,7 @@ SoftwareDevelopment::~SoftwareDevelopment()
     std::cout << "Software Development being destructed!" << std::endl;
 }
 
-void SoftwareDevelopment::setUpIDE(std::string nameOfOS, int amountOfHddInGb)
+void SoftwareDevelopment::setUpIDE(const std::string nameOfOS, const int amountOfHddInGb) const
 {
     if ( amountOfHddInGb > 50 )
     {
@@ -21,19 +21,19 @@ void SoftwareDevelopment::setUpIDE(std::string nameOfOS, int amountOfHddInGb)
     }
 }
 
-void SoftwareDevelopment::installFrameWork(std::string nameOfFrameWork)
+void SoftwareDevelopment::installFrameWork(const std::string nameOfFrameWork) const
 {
     int minRam = customBuildPc.amountOfRamInGb - 16;
     int minHDD = customBuildPc.amountOfHddInGb - 1880;
     std::cout << nameOfFrameWork << " will require " << minHDD << " gb space and " << minRam << " gb of RAM" << std::endl;
 }
 
-void SoftwareDevelopment::displaySystemInfo()
+void SoftwareDevelopment::displaySystemInfo() const
 {
     std::cout << "System Info: " << this->getRamAmountInGB() << std::endl;
 }
 
-int SoftwareDevelopment::getRamAmountInGB()
+int SoftwareDevelopment::getRamAmountInGB() const
 {
     std::cout << "Amount of RAM: " << customBuildPc.amountOfRamInGb << std::endl;
     return customBuildPc.amountOfRamInGb;

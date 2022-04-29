@@ -12,7 +12,7 @@ OperatingSystem::~OperatingSystem()
     std::cout << "OperatingSystem is being destructed!" << std::endl;
 }
 
-void OperatingSystem::monitorActivity(int amountRamInUse)
+void OperatingSystem::monitorActivity(const int amountRamInUse)
 {
     int ramAvailable = customBuildPc.amountOfRamInGb - amountRamInUse;
     std::string program = cpu.program;
@@ -32,7 +32,7 @@ int OperatingSystem::photoFinder()
     return photo;
 }
 
-void OperatingSystem::displayNameOfOS()
+void OperatingSystem::displayNameOfOS() const
 {
     std::cout << "Name of OS: " << this->nameOfOS << std::endl;
 }
